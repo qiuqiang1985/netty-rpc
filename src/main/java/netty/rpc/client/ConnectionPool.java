@@ -28,7 +28,7 @@ public class ConnectionPool {
 	 */
 	public Channel getChannel(){
 		try{
-			return poolBlockingQueue.remove();
+			return poolBlockingQueue.poll();
 		}catch (Exception e) {
 			logger.error("Pop a channel error.", e);
 			return null;
@@ -41,7 +41,7 @@ public class ConnectionPool {
 	 */
 	public void addLast(Channel channel){
 		try{
-			poolBlockingQueue.add(channel);
+			poolBlockingQueue.put(channel);
 		}catch (Exception e) {
 			logger.error("Add a channel error.", e);
 		}
@@ -59,7 +59,7 @@ public class ConnectionPool {
 		while(true){
 			
 			try{
-				channel = poolBlockingQueue.remove();
+				channel = poolBlockingQueue.poll();
 				if(channel!=null){
 					channel.close().awaitUninterruptibly();
 				}else{
