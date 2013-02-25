@@ -55,13 +55,20 @@ public class ConnectionPool {
 	public synchronized void close(){
 		
 		Channel channel = null;
+		int count = 0;
 		
 		while(true){
 			
 			try{
 				channel = poolBlockingQueue.poll();
 				if(channel!=null){
-					channel.close().awaitUninterruptibly();
+					count++;
+					try{
+						channel.close().awaitUninterruptibly();
+					}catch (Exception e) {
+						logger.error("Close one channel in pool.", e);
+					}
+					
 				}else{
 					break;
 				}
@@ -70,6 +77,8 @@ public class ConnectionPool {
 				logger.error("Close all channel in pool.", e);
 			}
 		}
+		
+		logger.warn("close the count of all channels is {}", count);
 		
 		poolBlockingQueue.clear();
 	}

@@ -16,6 +16,10 @@ public class Transport {
 		
 	}
 	
+	public Transport(byte[] key){
+		this(key, null);
+	}
+	
 	public Transport(byte[] key, byte[] value){
 		this.key = key;
 		this.value = value;

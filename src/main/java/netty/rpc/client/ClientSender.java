@@ -82,7 +82,7 @@ public class ClientSender {
 			}catch (Exception e) {
 				logger.error("BlockingGet error.", e);
 			}
-			free();
+			
 			return result.object;
 		}
 	}
@@ -93,7 +93,6 @@ public class ClientSender {
 	 */
 	public void sendNoBack(byte[] messages){
 		invoke(messages, nullResultHandler);
-		free();
 	}
 	
 	/**
@@ -119,7 +118,6 @@ public class ClientSender {
 				}
 			}
 		}
-		free();
 		return result.object;
 	}
 	
@@ -133,8 +131,6 @@ public class ClientSender {
 		final String keyString = ID_ATOMIC_LONG.incrementAndGet()+"";
 		
 		Transport transport = new Transport(keyString.getBytes(), messages);
-		
-//		final CountDownLatch latch = new CountDownLatch(1);
 		
 		if(resultHandler!=null){
 			if(callbackHandlerMap.put(keyString, resultHandler)!=null){
@@ -157,20 +153,13 @@ public class ClientSender {
 						logger.error("write failed!");
 					}
 				}
-//				latch.countDown();
+				
+				free(); //将链接返回到连接池中
 			}
 		});
 		
-//		//如果写入超时，则cancel本次发送
-//		try{
-//			latch.await(writeTimeout, TimeUnit.MILLISECONDS);
-//		}catch (Exception e) {
-//			logger.error("CountDownLatch await error.", e);
-//		}
-//		
-//		if(!channelFuture.isDone()){
-//			logger.error("cancell this write operation=="+channelFuture.cancel());
-//		}
+		
+		
 	}
 	
 	/**

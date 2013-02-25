@@ -187,7 +187,7 @@ public class ClientProxy {
 		}else{ //非法channel, 则建立一个新的链接
 			channel = createConnect(this.address, this.port);
 			if (channel==null || !channel.isConnected()) {
-				logger.error("can not get a connection failed or connection is not connected!");
+				logger.error("get a connection failed or connection is not connected!");
 				return null;
 			}
 			return new ClientSender(channel, callBackHandlerMap, connectionPool); 

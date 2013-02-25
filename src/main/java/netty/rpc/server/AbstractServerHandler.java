@@ -41,6 +41,8 @@ public abstract class AbstractServerHandler extends SimpleChannelUpstreamHandler
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception{
 		logger.error("Catch a exception, now close this channel.", e.getCause());
 		e.getChannel().close();
+		e.getCause().printStackTrace();
+		System.exit(-1);
 	}
 	
 	@Override
@@ -79,7 +81,6 @@ public abstract class AbstractServerHandler extends SimpleChannelUpstreamHandler
 			}catch (Exception e1) {
 				logger.error("Remove channel from allChannels.", e1);
 			}
-			
 		}
 	}
 	
