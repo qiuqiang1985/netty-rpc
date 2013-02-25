@@ -136,7 +136,7 @@ public class ClientSender {
 		
 		Transport transport = new Transport(keyString.getBytes(), messages);
 		
-		final CountDownLatch latch = new CountDownLatch(1);
+//		final CountDownLatch latch = new CountDownLatch(1);
 		
 		if(resultHandler!=null){
 			if(callbackHandlerMap.put(keyString, resultHandler)!=null){
@@ -159,20 +159,20 @@ public class ClientSender {
 						logger.error("write failed!");
 					}
 				}
-				latch.countDown();
+//				latch.countDown();
 			}
 		});
 		
-		//如果写入超时，则cancel本次发送
-		try{
-			latch.await(writeTimeout, TimeUnit.MILLISECONDS);
-		}catch (Exception e) {
-			logger.error("CountDownLatch await error.", e);
-		}
-		
-		if(!channelFuture.isDone()){
-			logger.error("cancell this write operation=="+channelFuture.cancel());
-		}
+//		//如果写入超时，则cancel本次发送
+//		try{
+//			latch.await(writeTimeout, TimeUnit.MILLISECONDS);
+//		}catch (Exception e) {
+//			logger.error("CountDownLatch await error.", e);
+//		}
+//		
+//		if(!channelFuture.isDone()){
+//			logger.error("cancell this write operation=="+channelFuture.cancel());
+//		}
 	}
 	
 	/**

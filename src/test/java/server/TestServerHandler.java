@@ -23,7 +23,7 @@ public class TestServerHandler extends AbstractServerHandler{
 		try{
 			
 			byte[] ret = transport.getValue(); //处理之后的返回结果
-			//System.out.println("8080端口接受到的数据："+new String(ret));
+			System.out.println("8080端口接受到的数据："+new String(ret));
 			
 			ServerSender sender = new ServerSender(channel, transport);
 			sender.send(ret);

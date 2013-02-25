@@ -19,12 +19,13 @@ public class TestClient {
 			
 			public void run() {
 				// TODO Auto-generated method stub
-				for(int i=0;i<10000;i++){
+				for(int i=0;i<10000000;i++){
 					try{
 //						ClientSender sender = proxy.NoBlockingGet("你好".getBytes());
 //						sender.get(10000);
 						//proxy.blockingGet("你好".getBytes(), 10000);
-						System.out.println(new String((byte[])proxy.blockingGet("你好".getBytes(), 10000)));
+						proxy.sendNoBack("你好".getBytes());
+						//System.out.println(new String((byte[])proxy.blockingGet("你好".getBytes(), 10000)));
 					}catch(Exception e){
 						System.out.println("cuowu");
 					}
