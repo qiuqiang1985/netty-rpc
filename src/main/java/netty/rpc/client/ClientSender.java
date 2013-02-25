@@ -33,15 +33,13 @@ public class ClientSender {
 	private ConnectionPool connectionPool;
 	private final Result result = new Result();
 	private volatile boolean hasNotified = false;
-	private int writeTimeout; //发送的超时时间
 	
 	public static final NullResultHandler nullResultHandler = new NullResultHandler(); //对返回结果不做任何处理
 	
-	public ClientSender(int writeTimeout, Channel channel, ConcurrentHashMap<String, ResultHandler> callbackHandlerMap, ConnectionPool connectionPool){
+	public ClientSender(Channel channel, ConcurrentHashMap<String, ResultHandler> callbackHandlerMap, ConnectionPool connectionPool){
 		this.channel = channel;
 		this.callbackHandlerMap = callbackHandlerMap;
 		this.connectionPool = connectionPool;
-		this.writeTimeout = writeTimeout;
 	}
 	
 	/**
@@ -115,7 +113,7 @@ public class ClientSender {
 		synchronized (result) {
 			if(!hasNotified){
 				try{
-					result.wait(writeTimeout);
+					result.wait(timeout);
 				}catch (Exception e) {
 					logger.error("Get result error.", e);
 				}

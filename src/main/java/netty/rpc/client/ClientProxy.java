@@ -34,8 +34,7 @@ public class ClientProxy {
 	private String address; //服务端的地址
 	private int port; //服务端的端口号
 	
-	public static int connectTimeout = 10000; //建立一个链接的最大耗时时间, 毫秒单位
-	public static  int writeTimeout = 5000; //写入超时时间
+	public static int connectTimeout = 5000; //建立一个链接的最大耗时时间, 毫秒单位
 	
 	private ClientBootstrap bootstrap = null;
 	
@@ -60,14 +59,12 @@ public class ClientProxy {
 	 * @param connectTimeout
 	 * @param writeTimeout
 	 */
-	private ClientProxy(String address, int port, int connectTimeout, int writeTimeout){
+	private ClientProxy(String address, int port, int connectTimeout){
 		this.address = address;
 		this.port = port;
 		this.connectTimeout = connectTimeout;
 		this.connectionPool = new ConnectionPool();
-		
-		this.writeTimeout = writeTimeout;
-		
+	
 		//default bootstrap
 		SimpleChannelUpstreamHandler handler = new ClientHandler(callBackHandlerMap);
 		this.bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
@@ -92,11 +89,11 @@ public class ClientProxy {
 	 * @param port
 	 * @return
 	 */
-	public static ClientProxy createClientProxy(String address, int port, int connectTimeout, int writeTimeout){
+	public static ClientProxy createClientProxy(String address, int port, int connectTimeout){
 		synchronized (allClients) {
 			String serverKeyString = generateServerKey(address, port);
 			if(!allClients.containsKey(serverKeyString)){
-				allClients.put(serverKeyString, new ClientProxy(address, port, connectTimeout, writeTimeout));
+				allClients.put(serverKeyString, new ClientProxy(address, port, connectTimeout));
 			}
 			return allClients.get(serverKeyString);
 		}
@@ -186,14 +183,14 @@ public class ClientProxy {
 		Channel channel = connectionPool.getChannel();
 		
 		if (channel!=null && channel.isConnected()) { //如果拿到的channel合法
-			return new ClientSender(this.writeTimeout, channel, callBackHandlerMap, connectionPool);
+			return new ClientSender(channel, callBackHandlerMap, connectionPool);
 		}else{ //非法channel, 则建立一个新的链接
 			channel = createConnect(this.address, this.port);
 			if (channel==null || !channel.isConnected()) {
 				logger.error("can not get a connection failed or connection is not connected!");
 				return null;
 			}
-			return new ClientSender(this.writeTimeout, channel, callBackHandlerMap, connectionPool); 
+			return new ClientSender(channel, callBackHandlerMap, connectionPool); 
 		}
 		
 	}
