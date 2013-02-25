@@ -35,6 +35,8 @@ public class ClientSender {
 	private volatile boolean hasNotified = false;
 	private int writeTimeout; //发送的超时时间
 	
+	public static final NullResultHandler nullResultHandler = new NullResultHandler(); //对返回结果不做任何处理
+	
 	public ClientSender(int writeTimeout, Channel channel, ConcurrentHashMap<String, ResultHandler> callbackHandlerMap, ConnectionPool connectionPool){
 		this.channel = channel;
 		this.callbackHandlerMap = callbackHandlerMap;
@@ -92,7 +94,7 @@ public class ClientSender {
 	 * @param messages
 	 */
 	public void sendNoBack(byte[] messages){
-		invoke(messages, null);
+		invoke(messages, nullResultHandler);
 		free();
 	}
 	

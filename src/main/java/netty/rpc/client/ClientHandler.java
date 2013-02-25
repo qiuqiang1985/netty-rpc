@@ -34,7 +34,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler{
 		if(handler!=null){
 			handler.processor(transport.getValue());
 		}else{
-			logger.warn("Can not find the handle with the key {}", keyString);
+			logger.error("Can not find the handle with the key {}", keyString);
 		}
 	}
 	
