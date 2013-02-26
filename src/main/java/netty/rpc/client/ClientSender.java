@@ -92,7 +92,7 @@ public class ClientSender {
 	 * @param messages
 	 */
 	public void sendNoBack(byte[] messages){
-		invoke(messages, nullResultHandler);
+		invoke(messages, null);
 	}
 	
 	/**
