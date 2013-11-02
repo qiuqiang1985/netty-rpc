@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: adsame
-Build-Jdk: 1.6.0_23
+Built-By: qiuqiang
+Build-Jdk: 1.6.0_27
 Created-By: Maven Integration for Eclipse
 
