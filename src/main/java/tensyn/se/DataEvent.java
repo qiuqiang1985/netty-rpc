@@ -2,6 +2,6 @@ package tensyn.se;
 
 public class DataEvent {
 	
-	public String test;
+	public String teststts;
 
 }
